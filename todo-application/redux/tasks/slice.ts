@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { TaskType } from '../../types/tasks';
-import { getTasks } from './operations';
+import { getTaskById, getTasks } from './operations';
 
 export interface initialTaskData {
     tasks: TaskType[];
@@ -42,6 +42,19 @@ const tasksSlice = createSlice({
                 state.tasks = action.payload;
             })
             .addCase(getTasks.rejected, (state) => {
+                state.isLoading = false;
+                state.isError = true;
+            })
+            .addCase(getTaskById.pending, (state) => {
+                state.isLoading = true;
+                state.isError = false;
+            })
+            .addCase(getTaskById.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.currentTask = action.payload;
+            })
+            .addCase(getTaskById.rejected, (state) => {
                 state.isLoading = false;
                 state.isError = true;
             })

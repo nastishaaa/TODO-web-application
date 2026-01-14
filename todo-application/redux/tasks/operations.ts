@@ -23,3 +23,23 @@ export const getTasks = createAsyncThunk<
         }
     }
 );
+
+export const getTaskById = createAsyncThunk<
+    TaskType,
+    number,
+    { rejectValue: string }>(
+        'tasks/getTaskById',
+        async (id, thunkAPI) => {
+            try {
+                const res = await axios.get(`http://localhost:3000/api/tasks/${id}`);
+                return res.data.task as TaskType;
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    return thunkAPI.rejectWithValue(
+                        error.response?.data?.message || error.message
+                    );
+                }
+                return thunkAPI.rejectWithValue("An unexpected error occurred");
+            }
+        }
+    );
