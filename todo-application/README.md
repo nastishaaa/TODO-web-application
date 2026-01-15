@@ -1,4 +1,4 @@
-# 📝 Modern TODO Application (Junior Full-Stack Task)
+# 📝 Modern TODO Application
 
 A polished, full-stack TODO application built with **Next.js (App Router)**, **Node.js**, and **Prisma**. This project demonstrates clean architecture, responsive design, and robust state management for a real-world scenario.
 
