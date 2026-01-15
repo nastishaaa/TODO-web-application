@@ -9,7 +9,7 @@ export default function TasksPage() {
                     <h1 className="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">
                         My Tasks
                     </h1>
-                    <Link href="/tasks/new" className="
+                    <Link href="/create-todo" className="
                         px-5 py-2 rounded-lg 
                         bg-gradient-to-r from-violet-600 to-indigo-600 
                         hover:from-violet-700 hover:to-indigo-700

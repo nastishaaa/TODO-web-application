@@ -1,14 +1,13 @@
 type TaskItemProps = {
-    id: number;
     title: string;
     description: string | undefined;
     done: boolean;
     priority: number;
 }
 
-export default function TaskItem({ id, title, description, done, priority }: TaskItemProps) {
+export default function TaskItem({ title, description, done, priority }: TaskItemProps) {
     return (
-        <li key={id} className={`
+        <div className={`
             list-none p-5 mb-4 rounded-xl border border-indigo-100/20
             bg-gradient-to-br from-slate-900 to-indigo-950
             shadow-[0_8px_30px_rgb(0,0,0,0.12)]
@@ -40,6 +39,6 @@ export default function TaskItem({ id, title, description, done, priority }: Tas
                             cursor-pointer transition-colors"
                 />
             </div>
-        </li>
+        </div>
     );
 }

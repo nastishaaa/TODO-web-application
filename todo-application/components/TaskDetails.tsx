@@ -1,30 +1,48 @@
 'use client';
 
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import { getTaskById } from "@/redux/tasks/operations";
+import { deleteTask, getTaskById, updateTask } from "@/redux/tasks/operations";
 import { selectCurrentTask } from "@/redux/tasks/selectors";
 import { useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type TaskDetailsProps = {
-  id: string;
+    id: string;
 };
 
 export default function TaskDetails({ id }: TaskDetailsProps) {
-  const currentTask = useAppSelector(selectCurrentTask);
-  const dispatch = useAppDispatch();
+    const currentTask = useAppSelector(selectCurrentTask);
+    const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(getTaskById(Number(id)));
-  }, [dispatch, id]); 
+    const router = useRouter();
 
-  if (!currentTask) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[#0B0F19]">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-indigo-500 border-t-transparent"></div>
-      </div>
-    );
-  }
+    const handleChangeIsDone = async () => {
+        if (!currentTask) return;
+
+        await dispatch(updateTask({ 
+        id: Number(id), 
+        data: { done: !currentTask.done } 
+        }));
+        router.refresh();
+    }
+
+    const handleDelete = async () => {
+        await dispatch(deleteTask(Number(id))).unwrap(); 
+        router.push("/tasks"); 
+    };
+
+    useEffect(() => {
+        dispatch(getTaskById(Number(id)));
+    }, [dispatch, id]); 
+
+    if (!currentTask) {
+        return (
+        <div className="flex min-h-screen items-center justify-center bg-[#0B0F19]">
+            <div className="h-12 w-12 animate-spin rounded-full border-4 border-indigo-500 border-t-transparent"></div>
+        </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-[#0B0F19] text-white font-sans">
@@ -37,10 +55,8 @@ export default function TaskDetails({ id }: TaskDetailsProps) {
                     <span className="group-hover:-translate-x-1 transition-transform">←</span>
                     Back to all tasks
                 </Link>
-
                 <section className="relative">
                     <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-indigo-500 to-pink-500 blur opacity-20" />
-          
                     <div className="relative rounded-3xl bg-[#111827] border border-white/10 p-8 md:p-12">
             
                         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-8">
@@ -82,7 +98,7 @@ export default function TaskDetails({ id }: TaskDetailsProps) {
                                     <p className="text-sm">{new Date(currentTask.createdAt).toLocaleDateString()}</p>
                                 </div>
                             </div>
-              
+
                             <div className="flex items-center gap-4 px-6 py-4 rounded-xl bg-white/5">
                                 <span className="text-2xl text-pink-400">⚙️</span>
                                 <div>
@@ -93,10 +109,18 @@ export default function TaskDetails({ id }: TaskDetailsProps) {
                         </div>
 
                         <div className="flex flex-wrap gap-4 mt-10">
-                            <button className="flex-1 rounded-xl bg-indigo-500 px-7 py-4 text-sm font-bold hover:bg-indigo-600 transition shadow-lg shadow-indigo-500/20">
-                                Edit Task
+                            <button
+                                onClick={handleChangeIsDone}
+                                className={`flex-1 rounded-xl px-7 py-4 text-sm font-bold transition shadow-lg ${currentTask.done
+                                        ? "bg-amber-500 hover:bg-amber-600 shadow-amber-500/20"
+                                        : "bg-indigo-500 hover:bg-indigo-600 shadow-indigo-500/20"
+                                    }`}
+                            >
+                                {currentTask.done ? "Mark as Undone" : "Mark as Done"}
                             </button>
-                            <button className="flex-1 rounded-xl border border-red-500/20 bg-red-500/10 px-7 py-4 text-sm font-bold text-red-400 hover:bg-red-500/20 transition">
+                            <button
+                                onClick={handleDelete}
+                                className="flex-1 rounded-xl border border-red-500/20 bg-red-500/10 px-7 py-4 text-sm font-bold text-red-400 hover:bg-red-500/20 transition">
                                 Delete Task
                             </button>
                         </div>

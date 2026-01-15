@@ -14,3 +14,7 @@ export type CreateTaskType = {
     done: boolean;
     priority: number;
 }
+
+export type UpdateTaskType = {
+    done: boolean;
+}
