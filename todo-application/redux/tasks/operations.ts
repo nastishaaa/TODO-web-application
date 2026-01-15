@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import type { CreateTaskType, TaskType, UpdateTaskType } from '../../types/tasks';
+import type { CreateTaskType, TaskType } from '../../types/tasks';
 
 export const getTasks = createAsyncThunk<
     TaskType[],
@@ -10,7 +10,7 @@ export const getTasks = createAsyncThunk<
     'tasks/getAllTasks',
     async (_, thunkAPI) => {
         try {
-            const res = await axios.get(`http://localhost:3000/api/tasks`);
+            const res = await axios.get(`api/tasks`);
 
             return res.data.tasks as TaskType[];
         } catch (error) {
@@ -31,7 +31,7 @@ export const getTaskById = createAsyncThunk<
         'tasks/getTaskById',
         async (id, thunkAPI) => {
             try {
-                const res = await axios.get(`http://localhost:3000/api/tasks/${id}`);
+                const res = await axios.get(`api/tasks/${id}`);
                 return res.data.task as TaskType;
             } catch (error) {
                 if (axios.isAxiosError(error)) {
@@ -52,7 +52,7 @@ export const createTask = createAsyncThunk<
     'tasks/createTask',
     async (payload, thunkAPI) => {
         try {
-            const res = await axios.post(`http://localhost:3000/api/tasks`, payload);
+            const res = await axios.post(`api/tasks`, payload);
             return res.data.task as TaskType;
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -73,7 +73,7 @@ export const updateTask = createAsyncThunk<
     'tasks/updateTask',
     async ({ id, data }, thunkAPI) => {
         try {
-            const res = await axios.patch(`http://localhost:3000/api/tasks/${id}`, data);
+            const res = await axios.patch(`api/tasks/${id}`, data);
             return res.data.updatedTask as TaskType;
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -92,7 +92,7 @@ export const deleteTask = createAsyncThunk<
     'tasks/deleteTask',
     async (id, thunkAPI) => {
         try {
-            await axios.delete(`http://localhost:3000/api/tasks/${id}`);
+            await axios.delete(`api/tasks/${id}`);
             return id;
         } catch (error) {
             if (axios.isAxiosError(error)) {
