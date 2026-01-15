@@ -28,7 +28,8 @@ export default function RootLayout({
         className={`${plusJakarta.className} antialiased`}
       >
         <Providers>
-          <Toaster/>
+          <Toaster 
+            position="top-right"/>
           <Header />
           {children}
           <Footer/>

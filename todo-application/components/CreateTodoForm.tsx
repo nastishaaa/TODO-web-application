@@ -36,7 +36,17 @@ export default function CreateTodoForm() {
     const handleSubmit = async (values: CreateTaskType, actions: FormikHelpers<CreateTaskType>) => {
         try {
             dispatch(createTask(values));
-            toast.success('Task was added!');
+            toast('Task was added!',
+            {
+                icon: '✨',
+                style: {
+                    borderRadius: '50px',
+                    background: 'rgba(51, 51, 51, 0.8)', 
+                    backdropFilter: 'blur(8px)',
+                    color: '#fff',
+                },
+            }
+);
             router.push("/tasks");
         } catch (err) {
             toast.error('Something went wrong...');

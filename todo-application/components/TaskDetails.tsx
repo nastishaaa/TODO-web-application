@@ -6,6 +6,7 @@ import { selectCurrentTask } from "@/redux/tasks/selectors";
 import { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 type TaskDetailsProps = {
     id: string;
@@ -24,11 +25,37 @@ export default function TaskDetails({ id }: TaskDetailsProps) {
         id: Number(id), 
         data: { done: !currentTask.done } 
         }));
+
+        toast('Status changed!', 
+            {
+                icon: '✨',
+                style: {
+                    borderRadius: '50px',
+                    background: 'rgba(51, 51, 51, 0.8)', 
+                    backdropFilter: 'blur(8px)',
+                    color: '#fff',
+                },
+            },
+        );
         router.refresh();
     }
 
     const handleDelete = async () => {
+        if (!currentTask) return;
+
         await dispatch(deleteTask(Number(id))).unwrap(); 
+        
+        toast('Task was deleted!',
+            {
+                icon: '✨',
+                style: {
+                    borderRadius: '50px',
+                    background: 'rgba(51, 51, 51, 0.8)', 
+                    backdropFilter: 'blur(8px)',
+                    color: '#fff',
+                },
+            }
+);
         router.push("/tasks"); 
     };
 
@@ -55,6 +82,7 @@ export default function TaskDetails({ id }: TaskDetailsProps) {
                     <span className="group-hover:-translate-x-1 transition-transform">←</span>
                     Back to all tasks
                 </Link>
+
                 <section className="relative">
                     <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-indigo-500 to-pink-500 blur opacity-20" />
                     <div className="relative rounded-3xl bg-[#111827] border border-white/10 p-8 md:p-12">
